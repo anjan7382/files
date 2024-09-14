@@ -1,0 +1,24 @@
+---
+- hosts: webservers
+  become: true
+  roles:
+  - role: my-role
+~                                                                                                                                                     
+~ ---
+# tasks file for my-role
+- name: Install Docker engine
+  apt:
+    name: docker.io
+    state: present
+
+- name: create group
+  group: name=demo state=present
+
+- name: create user
+  user: name=demo group=demo create_home=yes
+
+- name: Depoly springboot
+  become_user: root
+  become: yes
+  shell: docker run -itd -p 8085:8080 anjan738286/springboot
+~                                                                        

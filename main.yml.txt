@@ -1,0 +1,19 @@
+---
+- name: configure remote instance
+  hosts: 172.31.4.133
+  become: true
+  tasks:
+    - name: Install git
+      apt:
+        name: git
+        state: present
+
+    - name: Install apache maven
+      apt:
+        name: maven
+        state: present
+
+    - name: Install tomcat9
+      apt:
+        name: tomcat9
+        state: present
