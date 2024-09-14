@@ -1,0 +1,52 @@
+Deployment.yml
+--------------
+
+apiVersion: apps/v1 ------------ ( Specifies the API version)
+kind: Deployment ---------------- ( Specifies the kind of Kubernetes object)
+metadata:
+  name: deployment -------------- ( Name of the deployment)
+spec:
+  replicas: 1 ---------------- ( Number of pod replicas)
+  selector:
+    matchLabels:
+      app: bankingapp ------------ ( any name we can give )
+  template:                                                                             
+    metadata:
+      labels:                                                     
+        app: bankingapp  --------------- (any name we can give)
+    spec:
+      containers:
+        - name: bankingapp -------------( any valid name we can give )
+          image: sarika143/insurance1:v1 -------( docker image which is send to docker hub used for the container )
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: bankingapp ---- ( Yes, under the port section, you can give any name to the port. This is a descriptive name that helps identify the port within the container
+              containerPort:------------ ( The port number the container will listen on or you can specify any valid port number,  such as 8080, 8081, etc., in the containerPort field)
+              protocol: TCP  -----------  ( The protocol used by the port (e.g., TCP))
+
+
+                                                      LABELS:
+                                                      -------
+Labels: Labels are key-value pairs attached to Kubernetes objects (such as pods, services, etc.) 
+       that are used for identification, organization, and selection purposes.
+       In your YAML, the labels are used to match the deployment to the pods it manages.
+       For example, the app: my-app label is used in both the selector.matchLabels and template.metadata.labels sections to link them.
+
+
+                               service.yml file
+                               ----------------
+apiVersion: v1 ------------- ( Specifies the API version)
+kind: Service  ------------  ( Specifies the kind of Kubernetes object)
+metadata:      ------------ ( Contains data that helps uniquely identify the object, including a name and optionally other metadata such as labels and annotations)
+  name: service ----------   ( name of the service )
+spec:
+  type: ClusterIP --------  (  This specifies the type of Service) there are 3 types of services 1)load balancer 2)cluster ip 3) node port.
+  selector:       --------  ( This defines how the Service finds which Pods to send traffic to)
+    app: banking  --------  ( any name we can give )
+  ports:
+    - protocol: TCP
+      port: 80      ----------- (  The port that the Service will expose)
+      targetPort: 8081 -------- ( The port on the Pod that the traffic will be forwarded to)
+
+note: When this Service is created, it will direct traffic received on port 80 of the Service to port 8081 on the Pods selected by the app: banking label.
+----

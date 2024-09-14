@@ -2,19 +2,35 @@ git commands:
 
 git add . : it is used to untracked files to tracked files
 git commit -m " commit name" : Commit changes
-git push origin main : Push changes to remote repository
+git push origin main : Pushes the current branch to the remote repository
 git branch: to see current branch
 git branch branch name : to add a new branch
-git checkout branch name: to switch to branch
-git checkout -b branch name: to create and switch at a time
+git checkout branch name: Switches to the specified branch
+git checkout -b branch name: Creates a new branch and switches to it.
 git branch -m old name : to remove a branch
 git branch -d branch name : to delete a branch
 git restore : it is used to restore all deleted files
-git merge : it is uesd to merge two branches
+git merge (branch name) : Merges the specified branch into the current branch
+git log : Displays the commit history
+git log --oneline :  Displays each commit on a single line.
+git fetch [remote] : Fetches changes from the remote repository
+git pull [remote] [branch]:Fetches and merges changes from the remote repository to the current branch.
+git status : Displays the status of the working directory and staging area
+git revert (commit id or head):  command is used to create a new commit that undoes the changes made in the last commit. 
+                               { head : its indicate lastest commit}
+git reset commit id  or git reset --mixed commit id : it will delete previous commit history and file which is commit is present in working directory,again it will add 
+                                                      to staging area by giving ( (git add .) and commit it by giving ( git commit -m " commit meassage ") )
+
+git reset --soft commit id : it will delete previous commit history and file which is commit is present in working directory and staging area 
+                             after that commit it by giving ( git commit -m " commit meassage ") 
+
+git reset --hard commit id : it will delete file in working directory which is commited
+
+
 
 ---------------------------------------------------------------------------------------
 
-maven: it is a build used to convert the source into war or jar files
+maven: it is a build used to convert the source code into war or jar files
 
 1.take a repository from google
 2.clone into that repo
@@ -103,13 +119,24 @@ KUBERNETES:- kubernetes is an open source container management tool which automa
 kubernetes servers :- 1)load balancer
                       2) node port
                       3)cluster ip
-kubernetes components:-1)Api server (Kube API server or frontend Kubernetes control plane is the method of how the users interact with Kubernetes clusters)
-                       2)Etcd (backup store for all cluster data)
-                       3)schuduler (Kube scheduler is the Kubernetes master component that deals with assigning Pods to the Nodes.)
-                       4)contoller manager 
-types of load balancers:-1)application load balancer
-                         2)nerwork load balancer
-                         3)gateway load balancer
+kubernetes master: master is resposible for managing the complete cluster
+-----------------
+kubernetes master components:-1)Api server ( master communicate with the rest of the cluster through kube-api server)
+---------------------------
+                              2)Etcd (used to store all data used to manage the cluster)
+                              3)schuduler (Kube scheduler is responsible for distributing work or containers across multiple nodes, 
+                                           it looks for newly created containers and assigns them to nodes)
+                              4)contoller manager ( this is resposible for noticing and responding when nodes and containers are goes down )
+kubernetes worker node:
+----------------------
+kubelet: this is responsible for interacting with the master to provide health information of worker node.
+kube proxy: kube proxy is responsible for ensuring network traffic is routed properly to internal and external services as required.
+
+types of load balancers:-
+------------------------
+ 1)application load balancer
+ 2)nerwork load balancer
+ 3)gateway load balancer
 load balancer:- it is used to allow incoming traffic equally to the servers
 
 COMMANDS:-
@@ -123,6 +150,62 @@ kubectl describe pods [pod-name] :-View details about a particular pod
 kubectl describe pods :-Show details about all pods
 kubectl delete pods --all :- Remove all pods 
 kubectl logs [pod-name]:- to print logs from containers in a pod, use the kubectl logs command
+
+Deployment.yml
+--------------
+
+apiVersion: apps/v1 ------------ ( Specifies the API version)
+kind: Deployment ---------------- ( Specifies the kind of Kubernetes object)
+metadata:
+  name: deployment -------------- ( Name of the deployment)
+spec:
+  replicas: 1 ---------------- ( Number of pod replicas)
+  selector:
+    matchLabels:
+      app: bankingapp ------------ ( any name we can give )
+  template:                                                                             
+    metadata:
+      labels:                                                     
+        app: bankingapp  --------------- (any name we can give)
+    spec:
+      containers:
+        - name: bankingapp -------------( any valid name we can give )
+          image: sarika143/insurance1:v1 -------( docker image which is send to docker hub used for the container )
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: bankingapp ---- ( Yes, under the port section, you can give any name to the port. This is a descriptive name that helps identify the port within the container
+              containerPort:------------ ( The port number the container will listen on or you can specify any valid port number,  such as 8080, 8081, etc., in the containerPort field)
+              protocol: TCP  -----------  ( The protocol used by the port (e.g., TCP))
+
+
+                                                      LABELS:
+                                                      -------
+Labels: Labels are key-value pairs attached to Kubernetes objects (such as pods, services, etc.) 
+       that are used for identification, organization, and selection purposes.
+       In your YAML, the labels are used to match the deployment to the pods it manages.
+       For example, the app: my-app label is used in both the selector.matchLabels and template.metadata.labels sections to link them.
+
+
+                               service.yml file
+                               ----------------
+apiVersion: v1 ------------- ( Specifies the API version)
+kind: Service  ------------  ( Specifies the kind of Kubernetes object)
+metadata:      ------------ ( Contains data that helps uniquely identify the object, including a name and optionally other metadata such as labels and annotations)
+  name: service ----------   ( name of the service )
+spec:
+  type: ClusterIP --------  (  This specifies the type of Service) there are 3 types of services 1)load balancer 2)cluster ip 3) node port.
+  selector:       --------  ( This defines how the Service finds which Pods to send traffic to)
+    app: banking  --------  ( any name we can give )
+  ports:
+    - protocol: TCP
+      port: 80      ----------- (  The port that the Service will expose)
+      targetPort: 8081 -------- ( The port on the Pod that the traffic will be forwarded to)
+
+note: When this Service is created, it will direct traffic received on port 80 of the Service to port 8081 on the Pods selected by the app: banking label.
+----
+
+
+
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -199,39 +282,6 @@ command :-1) apt install ansible
 -- COMMAND :- ansible --playbook playbook file name --become
 
 -- finally we have to check in the host machine whether the server is installed or not.
-
-
-                                  jenkins installation commands.
-                                  ------------------------------
-
-sudo su -
-wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
-echo "deb https://pkg.jenkins.io/debian-stable binary/" > /etc/apt/sources.list.d/jenkins.list
-apt-get update
-apt install openjdk-8-jdk
-apt-get install jenkins
-service jenkins status
-
-                                   sonarqube installation steps
-                                   ----------------------------
-#Login with root user and run below commands
-
-sudo su -
-apt update
-apt install -y default-jdk unzip
-exit
-
-#Login with Non-Root User and run below commands(ubuntu)
-
-wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.8.0.63668.zip -O sonarqube.zip
-unzip sonarqube.zip 
-ls -lart
-mv sonarqube-9.8.0.63668 sonarqube
-rm sonarqube.zip
-cd sonarqube/bin/linux-x86-64/
-./sonar.sh start
-
-#Then Start Accessing SonarQube using URL 	http://<IP-Address>:9000
 
 
 

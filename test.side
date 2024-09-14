@@ -1,0 +1,77 @@
+{
+  "id": "51273afe-cf19-497c-992a-7a90f5f78814",
+  "version": "2.0",
+  "name": "test",
+  "url": "https://www.facebook.com",
+  "tests": [{
+    "id": "7d1ac786-a6ea-42a6-b46a-782e65f75b7a",
+    "name": "enter",
+    "commands": [{
+      "id": "4525d901-55bf-4823-a720-83804c46c856",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "969fc1c7-89eb-4d2c-beda-41dc97198d8f",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1382x744",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c1df9495-1d1e-46d6-8e85-d2292339ad90",
+      "comment": "",
+      "command": "type",
+      "target": "id=email",
+      "targets": [
+        ["id=email", "id"],
+        ["name=email", "name"],
+        ["css=#email", "css:finder"],
+        ["xpath=//input[@id='email']", "xpath:attributes"],
+        ["xpath=//form[@id='u_0_2_Vf']/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "anjankammara@gmail.com"
+    }, {
+      "id": "dd07dd48-c6d4-4bf6-ae20-3690a7986962",
+      "comment": "",
+      "command": "click",
+      "target": "id=pass",
+      "targets": [
+        ["id=pass", "id"],
+        ["name=pass", "name"],
+        ["css=#pass", "css:finder"],
+        ["xpath=//input[@id='pass']", "xpath:attributes"],
+        ["xpath=//div[@id='passContainer']/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b1a83528-35c3-4acb-ae1c-a680639a53ba",
+      "comment": "",
+      "command": "type",
+      "target": "id=pass",
+      "targets": [
+        ["id=pass", "id"],
+        ["name=pass", "name"],
+        ["css=#pass", "css:finder"],
+        ["xpath=//input[@id='pass']", "xpath:attributes"],
+        ["xpath=//div[@id='passContainer']/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "anjan@123"
+    }]
+  }],
+  "suites": [{
+    "id": "d87f8ea6-7716-479c-ad73-d8b290c5fa0a",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["7d1ac786-a6ea-42a6-b46a-782e65f75b7a"]
+  }],
+  "urls": ["https://www.facebook.com/"],
+  "plugins": []
+}

@@ -1,0 +1,23 @@
+apiversion: app/v1
+kind: Deployment
+metadata:
+  name: Deployment
+spec: 
+  replicas: 1
+  selectors:
+    matchlables:
+      app: bankingapp
+templates:
+  metadata:
+    lables:
+      app: bankingapp
+   spec:
+     containers:
+        name: bankingapp
+        image: anjan/insume
+        imagePullPolicy: IfNotPresent
+         - name: bankingapp
+              containerPort: 8081
+              protocol: TCP
+            
+    

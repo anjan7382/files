@@ -1,0 +1,59 @@
+package com.feb27.finance_me;
+
+import java.io.IOException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.By; 
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+public class App {
+    public static <var> void main(final String[] args) throws InterruptedException, IOException {
+        //System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
+      System.setProperty("webdriver.chrome.driver", "C:\\\\Users\\\\Dell\\\\Downloads\\\\chromedriver_win32\\chromedriver.exe");
+        final ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--remote-allow-origins=*", "ignore-certificate-errors");
+        //chromeOptions.addArguments("--headless");
+        //chromeOptions.addArguments("--no-sandbox");
+        chromeOptions.addArguments("--disable-dev-shm-usage");
+        
+        final WebDriver driver = new ChromeDriver(chromeOptions);
+        driver.get("http://16.171.30.144:8084/contact.html");
+        driver.manage().timeouts().implicitlyWait(5L, TimeUnit.SECONDS);
+        
+        // Find the form fields and button
+        var nameInput = driver.findElement(By.name("Name"));
+        var phoneInput = driver.findElement(By.name("Phone Number"));
+        var emailInput = driver.findElement(By.name("Email"));
+        var messageTextarea = driver.findElement(By.name("Message"));
+        var sendButton = driver.findElement(By.cssSelector(".send_bt a"));
+        
+        // Fill in the form fields
+        nameInput.sendKeys("anjan");
+        phoneInput.sendKeys("8297458120");
+        emailInput.sendKeys("anjankammara@gmail.com");
+        messageTextarea.sendKeys("Hello, I have some inquiries");
+        
+        // Click the send button
+        sendButton.click();
+        
+        // Wait for the response message to appear
+        var wait = new WebDriverWait(driver, 10);
+        var messageElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("message")));
+        
+        // Get the response message text
+        var message = messageElement.getText();
+        
+        // Verify the message
+        if (message.equals("Email Sent")) {
+            System.out.println("Script executed successfully");
+        } else {
+            System.out.println("Script failed");
+        }
+        Thread.sleep(3000L);
+		driver.quit();
+		}
+
+}
